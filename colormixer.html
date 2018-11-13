@@ -1,0 +1,71 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <title>Color Mixer</title>
+   <link rel="stylesheet" href="normalize.css">
+   <link rel="stylesheet" href="sakura.css">
+   <style>
+   .swatch {font-family: monospace}
+   </style>
+  </head>
+  <body onload="mix()">
+  <div>
+  <h1>Color Mixer</h1>
+  <span>Color 1 Red: </span>
+   <input type="range" min="0" max="255" value="0" oninput="mix()" id="r1">
+   <span id="r1t"></span>
+   </div>
+   <div>
+   <span>Color 1 Green: </span>
+   <input type="range" min="0" max="255" value="0" oninput="mix()" id="g1">
+   <span id="g1t"></span>
+   </div>
+   <div>
+   <span>Color 1 Blue: </span>
+   <input type="range" min="0" max="255" value="0" oninput="mix()" id="b1">
+   <span id="b1t"></span>
+   </div>
+   <div>
+   <span>Color 1: </span>
+   <span class="swatch" id="color1"></span>
+	<span id="color1t"></span>
+	</div>
+	<hr>
+	<div>
+	<span>Color 2 Red: </span>
+   <input type="range" min="0" max="255" value="255" oninput="mix()" id="r2">
+   <span id="r2t"></span>
+   </div>
+   <div>
+   <span>Color 2 Green: </span>
+   <input type="range" min="0" max="255" value="255" oninput="mix()" id="g2">
+   <span id="g2t"></span>
+   </div>
+   <div>
+   <span>Color 2 Blue: </span>
+   <input type="range" min="0" max="255" value="255" oninput="mix()" id="b2">
+   <span id="b2t"></span>
+   </div>
+   <div>
+   <span>Color 2: </span>
+   <span class="swatch" id="color2"></span>
+	<span id="color2t"></span>
+	</div>
+	<hr>
+	<div>
+	<span>Mix percentage: </span>
+	<input type="range" min="0" max="255" value="128" oninput="mix()" id="pos">
+	<span id="post"></span>
+  </div>
+  <div>
+  <span>Result color: </span>
+	<span class="swatch" id="color3"></span>
+	<span id="color3t"></span>
+  </div>
+  <h6>(c)2018 Shinkarom.</h6>
+	<script src="colormixer.js"></script>
+  </body>
+</html>
