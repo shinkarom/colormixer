@@ -7,15 +7,8 @@ function changePos(x,y,pos){
  return result;
 }
 
-function indexIn(num,array){
- for(var i=0;i<array.length;i++){
-  if(array[i]==num) return i;
- }
- return -1;
-}
-
 function hexToNumber(x,y){
- return indexIn(x,symbols)*16 + indexIn(y,symbols);
+ return symbols.indexOf(x)*16 + symbols.indexOf(y);
 }
 
 function numberToHex(num){
@@ -45,11 +38,60 @@ function getValue(sel){
 }
 
 function setRes(num,color){
- document.querySelector('#color'+num+'t').innerText = color;	
+ document.querySelector('#color'+num+'t').value = color;	
  var res = document.querySelector('#color'+num);
  res.innerText = color;
  res.style.color = color;
  res.style.backgroundColor = color;
+}
+
+function getPropFromPos(pos){
+	var prop = pos-128;
+	if(prop>=0)prop++;
+	return prop;
+}
+
+function isHexColor(str){
+	return /^#[0123456789abcdef]{6}$/i.test(str);
+}
+
+function colorEdit(){
+	if (isHexColor(this.value)) editMix();
+}
+
+function bodyLoad(){
+	['r1','g1','b1','r2','g2','b2','pos'].forEach(
+		function (elem){document.querySelector('#'+elem).addEventListener('input',mix)}
+	);	
+	['color1t','color2t'].forEach(
+		function (elem){document.querySelector('#'+elem).addEventListener('input',colorEdit)}
+	);	
+	mix();
+}
+
+function editMix(){
+ var pos = document.querySelector('#pos').value;
+ document.querySelector('#post').innerText = getPropFromPos(pos);
+ var color1 = document.querySelector('#color1t').value;
+ var color2 = document.querySelector('#color2t').value;
+ var [r1,g1,b1] = hexToRGB(color1);
+ var [r2,g2,b2] = hexToRGB(color2);
+ var color3 = (pos==255) ? color2 : mixColors(r1,g1,b1,r2,g2,b2,pos);
+ document.querySelector('#r1').value=r1;
+ document.querySelector('#r1t').innerText = r1;
+ document.querySelector('#g1').value=g1;
+ document.querySelector('#g1t').innerText = g1;
+ document.querySelector('#b1').value=b1;
+ document.querySelector('#b1t').innerText = b1;
+ document.querySelector('#r2').value=r2;
+ document.querySelector('#r2t').innerText = r2;
+ document.querySelector('#g2').value=g2;
+ document.querySelector('#g2t').innerText = g2;
+ document.querySelector('#b2').value=b2;
+ document.querySelector('#b2t').innerText = b2;
+ setRes(1,color1);
+ setRes(2,color2); 
+ setRes(3,color3);
 }
 
 function mix(){	
@@ -66,12 +108,10 @@ function mix(){
  var b2 = getValue('b2');
  document.querySelector('#b2t').innerText = b2;
  var pos = document.querySelector('#pos').value;
- document.querySelector('#post').innerText = pos;
+ document.querySelector('#post').innerText = getPropFromPos(pos);
  var color1 = rgbToHex(r1,g1,b1);
  var color2 = rgbToHex(r2,g2,b2);
- var color3;
- if (pos==255) color3=color2; else
-color3 = mixColors(r1,g1,b1,r2,g2,b2,pos);
+ var color3 = (pos==255) ? color2 : mixColors(r1,g1,b1,r2,g2,b2,pos);
  setRes(1,color1);
  setRes(2,color2); 
  setRes(3,color3);

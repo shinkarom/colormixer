@@ -11,59 +11,59 @@
    .swatch {font-family: monospace}
    </style>
   </head>
-  <body onload="mix()">
+  <body onload="bodyLoad()">
   <div>
   <h1>Color Mixer</h1>
   <span>Color 1 Red: </span>
-   <input type="range" min="0" max="255" value="0" oninput="mix()" id="r1">
+   <input type="range" min="0" max="255" value="0" id="r1">
    <span id="r1t"></span>
    </div>
    <div>
    <span>Color 1 Green: </span>
-   <input type="range" min="0" max="255" value="0" oninput="mix()" id="g1">
+   <input type="range" min="0" max="255" value="0" id="g1">
    <span id="g1t"></span>
    </div>
    <div>
    <span>Color 1 Blue: </span>
-   <input type="range" min="0" max="255" value="0" oninput="mix()" id="b1">
+   <input type="range" min="0" max="255" value="0" id="b1">
    <span id="b1t"></span>
    </div>
    <div>
    <span>Color 1: </span>
    <span class="swatch" id="color1"></span>
-	<span id="color1t"></span>
+	<input type="text" size="7" id="color1t">
 	</div>
 	<hr>
 	<div>
 	<span>Color 2 Red: </span>
-   <input type="range" min="0" max="255" value="255" oninput="mix()" id="r2">
+   <input type="range" min="0" max="255" value="255" id="r2">
    <span id="r2t"></span>
    </div>
    <div>
    <span>Color 2 Green: </span>
-   <input type="range" min="0" max="255" value="255" oninput="mix()" id="g2">
+   <input type="range" min="0" max="255" value="255" id="g2">
    <span id="g2t"></span>
    </div>
    <div>
    <span>Color 2 Blue: </span>
-   <input type="range" min="0" max="255" value="255" oninput="mix()" id="b2">
+   <input type="range" min="0" max="255" value="255" id="b2">
    <span id="b2t"></span>
    </div>
    <div>
    <span>Color 2: </span>
    <span class="swatch" id="color2"></span>
-	<span id="color2t"></span>
+	<input type="text" size="7" id="color2t">
 	</div>
 	<hr>
 	<div>
-	<span>Mix percentage: </span>
-	<input type="range" min="0" max="255" value="128" oninput="mix()" id="pos">
+	<span>Mix proportion: </span>
+	<input type="range" min="0" max="255" value="128" id="pos">
 	<span id="post"></span>
   </div>
   <div>
   <span>Result color: </span>
 	<span class="swatch" id="color3"></span>
-	<span id="color3t"></span>
+	<input type="text" readonly="readonly" size="7" id="color3t">
   </div>
   <h6>(c)2018 Shinkarom.</h6>
 	<script src="colormixer.js"></script>
