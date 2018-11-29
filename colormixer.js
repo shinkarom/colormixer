@@ -105,25 +105,25 @@ function editMix () {
   setRes(3, color3)
 }
 
+function setSliderText(color, number){
+	document.querySelector(`#r${number}t`).innerText = color.r
+	document.querySelector(`#g${number}t`).innerText = color.g
+	document.querySelector(`#b${number}t`).innerText = color.b
+}
+
+function getColorFromSliders(number){
+	return new RGB(getValue(`r${number}`),getValue(`g${number}`),getValue(`b${number}`))
+}
+
 function mix () {
-  var r1 = getValue('r1')
-  document.querySelector('#r1t').innerText = r1
-  var g1 = getValue('g1')
-  document.querySelector('#g1t').innerText = g1
-  var b1 = getValue('b1')
-  document.querySelector('#b1t').innerText = b1
-  var r2 = getValue('r2')
-  document.querySelector('#r2t').innerText = r2
-  var g2 = getValue('g2')
-  document.querySelector('#g2t').innerText = g2
-  var b2 = getValue('b2')
-  document.querySelector('#b2t').innerText = b2
+  var rgb1 = new getColorFromSliders(1)
+  var rgb2 = new getColorFromSliders(2)
+  setSliderText(rgb1,1)
+  setSliderText(rgb2,2)
   var pos = document.querySelector('#pos').value
-  document.querySelector('#post').innerText = getPropFromPos(pos)
-  var rgb1 = new RGB(r1, g1, b1)
-  var rgb2 = new RGB(r2, g2, b2)
-  var color1 = rgbToHex(r1, g1, b1)
-  var color2 = rgbToHex(r2, g2, b2)
+  document.querySelector('#post').innerText = getPropFromPos(pos)  
+  var color1 = rgb1.toHex()
+  var color2 = rgb2.toHex()
   var color3 = (pos === 255) ? color2 : mixColors(rgb1, rgb2, pos)
   setRes(1, color1)
   setRes(2, color2)
