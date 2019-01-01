@@ -15,47 +15,50 @@
   <div>
   <h1>Color Mixer</h1>
   <fieldset>
+  <legend>Color Model</legend>
+	<input type="radio" name="model" value="rgb" checked>RGB</input>
+  </fieldset>
+  <fieldset>
   <legend>Color 1</legend>
   <div>
-  <span>Color 1 Red: </span>
+  <span>Red: </span>
    <input type="range" min="0" max="255" value="0" id="r1">
    <span id="r1t"></span>
    </div>
    <div>
-   <span>Color 1 Green: </span>
+   <span>Green: </span>
    <input type="range" min="0" max="255" value="0" id="g1">
    <span id="g1t"></span>
    </div>
    <div>
-   <span>Color 1 Blue: </span>
+   <span>Blue: </span>
    <input type="range" min="0" max="255" value="0" id="b1">
    <span id="b1t"></span>
    </div>
    <div>
-   <span>Color 1: </span>
    <div class="swatch" id="color1"></div>
 	<input type="text" size="7" id="color1t">
 	<span id="rgb1"></span>
 	</div>
 	</fieldset>
 	<fieldset>
+	<legend>Color 2</legend>
 	<div>
-	<span>Color 2 Red: </span>
+	<span>Red: </span>
    <input type="range" min="0" max="255" value="255" id="r2">
    <span id="r2t"></span>
    </div>
    <div>
-   <span>Color 2 Green: </span>
+   <span>Green: </span>
    <input type="range" min="0" max="255" value="255" id="g2">
    <span id="g2t"></span>
    </div>
    <div>
-   <span>Color 2 Blue: </span>
+   <span>Blue: </span>
    <input type="range" min="0" max="255" value="255" id="b2">
    <span id="b2t"></span>
    </div>
    <div>
-   <span>Color 2: </span>
    <div class="swatch" id="color2"></div>
 	<input type="text" size="7" id="color2t">
 	<span id="rgb2"></span>
@@ -66,7 +69,7 @@
 	<span id="post"></span>
 	</fieldset>
 	<fieldset>
-  <span>Result color: </span>
+  <legend>Result color</legend>
 	<div class="swatch" id="color3"></div>
 	<span id="color3t"></span>
   </fieldset>

@@ -37,6 +37,17 @@ class RGB {
   toResultString(){
 	return `${this.toHex()} ${this.toRGBString()}`
   }
+  
+  static mix(color1,color2,pos){
+	var r3 = changePos(color1.r, color2.r, pos)
+	var g3 = changePos(color1.g, color2.g, pos)
+	var b3 = changePos(color1.b, color2.b, pos)
+	return new RGB(r3, g3, b3)
+  }
+}
+
+class HSL{
+	
 }
 
 function changePos (x, y, pos) {
@@ -52,11 +63,9 @@ function hexToRGB (hex) {
   return new RGB(r, g, b)
 }
 
-function mixColors (color1, color2, pos) {
-  var r3 = changePos(color1.r, color2.r, pos)
-  var g3 = changePos(color1.g, color2.g, pos)
-  var b3 = changePos(color1.b, color2.b, pos)
-  return new RGB(r3, g3, b3)
+function mixColors(color1,color2,pos,model){
+	if(model=="rgb") return mixRGB(color1,color2,pos);
+	else return RGB.mix(color1,color2,pos);
 }
 
 function getValue (sel) {
