@@ -12,76 +12,25 @@ function numberToHex (num) {
   return symbols[Math.floor(num / 16)] + symbols[num % 16]
 }
 
-class RGB {
-  constructor (r, g, b) {
-    this.r = r
-    this.g = g
-    this.b = b
-  }
-  
-  getComplement(){
-	  let newR = 255 - this.r
-	  let newG = 255 - this.g
-	  let newB = 255 - this.b
-	  return new RGB(newR,newG,newB)
-  }
-  
-  min(){
-	  let res = {value: this.r,index:0};
-	  if(this.g<res.value) res = {value: this.g,index:1};
-	  if(this.b<res.value) res = {value: this.b,index:2};
-  }
-  
-  max(){
-	  let res = {value: this.r,index:0};
-	  if(this.g>res.value) res = {value: this.g,index:1};
-	  if(this.b>res.value) res = {value: this.b,index:2};
-  }
-  
-  toHex () {
-    return '#' + numberToHex(this.r) + numberToHex(this.g) + numberToHex(this.b)
-  }
-  
-  toRGBString(){
-	  return `(${this.r}, ${this.g}, ${this.b})`
-  }
-  
-  toResultString(){
-	return `${this.toHex()} ${this.toRGBString()}`
-  }
-  
-  toHSI(){
-	  
-  }
-  
-  static mix(color1,color2,pos){
-	var r3 = interpolate(color1.r, color2.r, pos)
-	var g3 = interpolate(color1.g, color2.g, pos)
-	var b3 = interpolate(color1.b, color2.b, pos)
-	return new RGB(r3, g3, b3)
-  }
-  
-  //TODO: Implement RGB to HSI
-  
-}
-
-class HSI{
-	constructor (h,s,i){
-		this.h = h;
-		this.s = s;
-		this.i = i;
-	}
-	
-	static mix(color1,color2,pos){
-		//TODO: Implement HSI mixing
-		return color1
-	}
-	
-	//TODO: Implement HSI to RGB
-}
-
 function interpolate (x, y, pos) {
   return Math.ceil(x + (y-x) * pos)
+}
+
+function getRGBString(color){
+	let c = color.rgb()
+	return `(${c[0]}, ${c[1]}, ${c[2]})`
+}
+
+function getResultString(color){
+	return `${color.hex()} ${getRGBString(color)}`
+}
+
+function getComplement(color){
+	let c = color.rgb()
+	let r = 255-c.red;
+	let g = 255-c.green;
+	let b = 255-c.blue;
+	return chroma(r,g,b)
 }
 
 function hexToRGB (hex) {
@@ -92,14 +41,7 @@ function hexToRGB (hex) {
 }
 
 function mixColors(color1,color2,pos,model){
-	switch(model){
-		case "rgb":
-			return RGB.mix(color1,color2,pos);
-		case "hsi":
-			return HSI.mix(color1,color2,pos);
-		default:
-			return new RGB(1,2,3);
-	}
+	return chroma.mix(color1,color2,pos,model);
 }
 
 function getValue (sel) {
@@ -107,19 +49,19 @@ function getValue (sel) {
 }
 
 function setRes (num, color) {
-  let hexColor = color.toHex()
-  let complementColor = color.getComplement().toHex()
+  let hexColor = color.hex()
+  let complementColor = getComplement(color).hex()
   document.querySelector(`#color${num}t`).value = hexColor
-  document.querySelector(`#rgb${num}`).innerText = color.toRGBString()
+  document.querySelector(`#rgb${num}`).innerText = getRGBString(color)
   var res = document.querySelector(`#color${num}`)
   res.style.backgroundColor = hexColor
   res.style.borderColor = complementColor
 }
 
 function setResult(num,color){
-  let hexColor = color.toHex()
-  let complementColor = color.getComplement().toHex()
-  document.querySelector(`#color${num}t`).innerText = color.toResultString()
+  let hexColor = color.hex()
+  let complementColor = getComplement(color).hex()
+  document.querySelector(`#color${num}t`).innerText = getResultString(color)
   var res = document.querySelector(`#color${num}`)
   res.style.backgroundColor = hexColor
   res.style.borderColor = complementColor
@@ -140,7 +82,7 @@ function bodyLoad () {
   ['color1t', 'color2t'].forEach(
     function (elem) { document.querySelector('#' + elem).addEventListener('input', colorEdit) }
   );
-  ['rgb','hsi'].forEach(
+  ['rgb','hsl','hsv','lab','lch'].forEach(
   function(elem){ document.getElementById(elem).addEventListener('input',modelInput)}
   );
   mix()
@@ -164,7 +106,7 @@ function editMix () {
   var color2 = document.querySelector('#color2t').value
   var rgb1 = hexToRGB(color1)
   var rgb2 = hexToRGB(color2)
-  var rgb3 = (pos === 255) ? rgb2 : mixColors(rgb1, rgb2, pos,model)
+  var rgb3 = (pos === 255) ? rgb2 : mixColors(color1, color2, pos,model)
   setRGBSwatches(rgb1, 1)
   setRGBSwatches(rgb2, 2)
   setRes(1, rgb1)
@@ -173,7 +115,7 @@ function editMix () {
 }
 
 function getColorFromSliders(number){
-	return new RGB(getValue(`r${number}`),getValue(`g${number}`),getValue(`b${number}`))
+	return chroma(getValue(`r${number}`),getValue(`g${number}`),getValue(`b${number}`))
 }
 
 function mix () {

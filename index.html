@@ -58,7 +58,10 @@
 	<div>
 	<span>Color Model: </span>
 	<input type="radio" name="model" value="rgb" id="rgb" checked>RGB</input>
-	<input type="radio" name="model" value="hsi" id="hsi">HSI</input>
+	<input type="radio" name="model" value="hsl" id="hsl">HSL</input>
+	<input type="radio" name="model" value="hsv" id="hsv">HSV</input>
+	<input type="radio" name="model" value="lab" id="lab">Lab</input>
+	<input type="radio" name="model" value="lch" id="lch">LCH</input>
 	</div>
 	<div>
 	<span>Mix proportion: </span>
@@ -67,12 +70,13 @@
 	</div>
 	</fieldset>
 	<fieldset>
-  <legend>Result color</legend>
+  <legend>Resulting color</legend>
 	<div class="swatch" id="color3"></div>
 	<span id="color3t"></span>
   </fieldset>
   </div>
   <h6>(c)2018 Shinkarom.</h6>
-	<script src="colormixer.js"></script>
+     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.2/chroma.min.js"></script>
+	<script defer src="colormixer.js"></script>
   </body>
 </html>
