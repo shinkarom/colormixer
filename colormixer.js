@@ -29,6 +29,14 @@ class RGB {
   toHex () {
     return '#' + numberToHex(this.r) + numberToHex(this.g) + numberToHex(this.b)
   }
+  
+  toRGBString(){
+	  return `(${this.r}, ${this.g}, ${this.b})`
+  }
+  
+  toResultString(){
+	return `${this.toHex()} ${this.toRGBString()}`
+  }
 }
 
 function changePos (x, y, pos) {
@@ -42,10 +50,6 @@ function hexToRGB (hex) {
   var g = hexToNumber(hex[3], hex[4])
   var b = hexToNumber(hex[5], hex[6])
   return new RGB(r, g, b)
-}
-
-function rgbToHex (r, g, b) {
-  return '#' + numberToHex(r) + numberToHex(g) + numberToHex(b)
 }
 
 function mixColors (color1, color2, pos) {
@@ -63,15 +67,23 @@ function setRes (num, color) {
   let hexColor = color.toHex()
   let complementColor = color.getComplement().toHex()
   document.querySelector(`#color${num}t`).value = hexColor
+  document.querySelector(`#rgb${num}`).innerText = color.toRGBString()
+  var res = document.querySelector(`#color${num}`)
+  res.style.backgroundColor = hexColor
+  res.style.borderColor = complementColor
+}
+
+function setResult(num,color){
+  let hexColor = color.toHex()
+  let complementColor = color.getComplement().toHex()
+  document.querySelector(`#color${num}t`).innerText = color.toResultString()
   var res = document.querySelector(`#color${num}`)
   res.style.backgroundColor = hexColor
   res.style.borderColor = complementColor
 }
 
 function getPropFromPos (pos) {
-  var prop = pos - 128
-  if (prop >= 0)prop++
-  return prop
+	return pos+"/255"
 }
 
 function colorEdit () {
@@ -109,7 +121,7 @@ function editMix () {
   setRGBSwatches(rgb2, 2)
   setRes(1, rgb1)
   setRes(2, rgb2)
-  setRes(3, rgb3)
+  setResult(3, rgb3)
 }
 
 function setSliderText(color, number){
@@ -132,5 +144,5 @@ function mix () {
   var rgb3 = (pos === 255) ? color2 : mixColors(rgb1, rgb2, pos)
   setRes(1, rgb1)
   setRes(2, rgb2)
-  setRes(3, rgb3)
+  setResult(3, rgb3)
 }
