@@ -15,25 +15,18 @@
   <div>
   <h1>Color Mixer</h1>
   <fieldset>
-  <legend>Color Model</legend>
-	<input type="radio" name="model" value="rgb" checked>RGB</input>
-  </fieldset>
-  <fieldset>
   <legend>Color 1</legend>
   <div>
   <span>Red: </span>
    <input type="range" min="0" max="255" value="0" id="r1">
-   <span id="r1t"></span>
    </div>
    <div>
    <span>Green: </span>
    <input type="range" min="0" max="255" value="0" id="g1">
-   <span id="g1t"></span>
    </div>
    <div>
    <span>Blue: </span>
    <input type="range" min="0" max="255" value="0" id="b1">
-   <span id="b1t"></span>
    </div>
    <div>
    <div class="swatch" id="color1"></div>
@@ -46,17 +39,14 @@
 	<div>
 	<span>Red: </span>
    <input type="range" min="0" max="255" value="255" id="r2">
-   <span id="r2t"></span>
    </div>
    <div>
    <span>Green: </span>
    <input type="range" min="0" max="255" value="255" id="g2">
-   <span id="g2t"></span>
    </div>
    <div>
    <span>Blue: </span>
    <input type="range" min="0" max="255" value="255" id="b2">
-   <span id="b2t"></span>
    </div>
    <div>
    <div class="swatch" id="color2"></div>
@@ -64,9 +54,17 @@
 	<span id="rgb2"></span>
 	</fieldset>	
 	<fieldset>
+	<legend>Mix settings</legend>
+	<div>
+	<span>Color Model: </span>
+	<input type="radio" name="model" value="rgb" id="rgb" checked>RGB</input>
+	<input type="radio" name="model" value="hsi" id="hsi">HSI</input>
+	</div>
+	<div>
 	<span>Mix proportion: </span>
 	<input type="range" min="0" max="255" value="128" id="pos">
 	<span id="post"></span>
+	</div>
 	</fieldset>
 	<fieldset>
   <legend>Result color</legend>

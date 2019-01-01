@@ -26,6 +26,18 @@ class RGB {
 	  return new RGB(newR,newG,newB)
   }
   
+  min(){
+	  let res = {value: this.r,index:0};
+	  if(this.g<res.value) res = {value: this.g,index:1};
+	  if(this.b<res.value) res = {value: this.b,index:2};
+  }
+  
+  max(){
+	  let res = {value: this.r,index:0};
+	  if(this.g>res.value) res = {value: this.g,index:1};
+	  if(this.b>res.value) res = {value: this.b,index:2};
+  }
+  
   toHex () {
     return '#' + numberToHex(this.r) + numberToHex(this.g) + numberToHex(this.b)
   }
@@ -38,22 +50,38 @@ class RGB {
 	return `${this.toHex()} ${this.toRGBString()}`
   }
   
+  toHSI(){
+	  
+  }
+  
   static mix(color1,color2,pos){
-	var r3 = changePos(color1.r, color2.r, pos)
-	var g3 = changePos(color1.g, color2.g, pos)
-	var b3 = changePos(color1.b, color2.b, pos)
+	var r3 = interpolate(color1.r, color2.r, pos)
+	var g3 = interpolate(color1.g, color2.g, pos)
+	var b3 = interpolate(color1.b, color2.b, pos)
 	return new RGB(r3, g3, b3)
   }
+  
+  //TODO: Implement RGB to HSI
+  
 }
 
-class HSL{
+class HSI{
+	constructor (h,s,i){
+		this.h = h;
+		this.s = s;
+		this.i = i;
+	}
 	
+	static mix(color1,color2,pos){
+		//TODO: Implement HSI mixing
+		return color1
+	}
+	
+	//TODO: Implement HSI to RGB
 }
 
-function changePos (x, y, pos) {
-  var diff = y - x
-  var result = Math.ceil(x + diff * pos)
-  return result
+function interpolate (x, y, pos) {
+  return Math.ceil(x + (y-x) * pos)
 }
 
 function hexToRGB (hex) {
@@ -64,8 +92,14 @@ function hexToRGB (hex) {
 }
 
 function mixColors(color1,color2,pos,model){
-	if(model=="rgb") return mixRGB(color1,color2,pos);
-	else return RGB.mix(color1,color2,pos);
+	switch(model){
+		case "rgb":
+			return RGB.mix(color1,color2,pos);
+		case "hsi":
+			return HSI.mix(color1,color2,pos);
+		default:
+			return new RGB(1,2,3);
+	}
 }
 
 function getValue (sel) {
@@ -105,38 +139,37 @@ function bodyLoad () {
   );
   ['color1t', 'color2t'].forEach(
     function (elem) { document.querySelector('#' + elem).addEventListener('input', colorEdit) }
-  )
+  );
+  ['rgb','hsi'].forEach(
+  function(elem){ document.getElementById(elem).addEventListener('input',modelInput)}
+  );
   mix()
+}
+
+function modelInput(){
+	mix()
 }
 
 function setRGBSwatches (color, number) {
   document.querySelector(`#r${number}`).value = color.r
-  document.querySelector(`#r${number}t`).innerText = color.r
   document.querySelector(`#g${number}`).value = color.g
-  document.querySelector(`#g${number}t`).innerText = color.g
   document.querySelector(`#b${number}`).value = color.b
-  document.querySelector(`#b${number}t`).innerText = color.b
 }
 
 function editMix () {
   var pos = document.querySelector('#pos').value /256
   document.querySelector('#post').innerText = getPropFromPos(pos)
+  let model = document.querySelector('input[name=model]:checked').value
   var color1 = document.querySelector('#color1t').value
   var color2 = document.querySelector('#color2t').value
   var rgb1 = hexToRGB(color1)
   var rgb2 = hexToRGB(color2)
-  var color3 = (pos === 255) ? color2 : mixColors(rgb1, rgb2, pos)
+  var rgb3 = (pos === 255) ? rgb2 : mixColors(rgb1, rgb2, pos,model)
   setRGBSwatches(rgb1, 1)
   setRGBSwatches(rgb2, 2)
   setRes(1, rgb1)
   setRes(2, rgb2)
   setResult(3, rgb3)
-}
-
-function setSliderText(color, number){
-	document.querySelector(`#r${number}t`).innerText = color.r
-	document.querySelector(`#g${number}t`).innerText = color.g
-	document.querySelector(`#b${number}t`).innerText = color.b
 }
 
 function getColorFromSliders(number){
@@ -146,11 +179,10 @@ function getColorFromSliders(number){
 function mix () {
   var rgb1 = new getColorFromSliders(1)
   var rgb2 = new getColorFromSliders(2)
-  setSliderText(rgb1,1)
-  setSliderText(rgb2,2)
   var pos = document.querySelector('#pos').value /256
+  let model = document.querySelector('input[name=model]:checked').value
   document.querySelector('#post').innerText = getPropFromPos(document.querySelector('#pos').value)  
-  var rgb3 = (pos === 255) ? color2 : mixColors(rgb1, rgb2, pos)
+  var rgb3 = (pos === 255) ? rgb2 : mixColors(rgb1, rgb2, pos,model)
   setRes(1, rgb1)
   setRes(2, rgb2)
   setResult(3, rgb3)
