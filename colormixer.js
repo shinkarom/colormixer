@@ -1,22 +1,7 @@
 var symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
 
-class RGB {
-  constructor (r, g, b) {
-    this.r = r
-    this.g = g
-    this.b = b
-  }
-
-  toHex () {
-    return '#' + numberToHex(this.r) + numberToHex(this.g) + numberToHex(this.b)
-  }
-}
-
-function changePos (x, y, pos) {
-  var diff = y - x
-  var percent = pos / 256
-  var result = Math.ceil(x + diff * percent)
-  return result
+function isHexColor (str) {
+  return /^#[0123456789abcdef]{6}$/i.test(str)
 }
 
 function hexToNumber (x, y) {
@@ -25,6 +10,31 @@ function hexToNumber (x, y) {
 
 function numberToHex (num) {
   return symbols[Math.floor(num / 16)] + symbols[num % 16]
+}
+
+class RGB {
+  constructor (r, g, b) {
+    this.r = r
+    this.g = g
+    this.b = b
+  }
+  
+  getComplement(){
+	  let newR = 255 - this.r
+	  let newG = 255 - this.g
+	  let newB = 255 - this.b
+	  return new RGB(newR,newG,newB)
+  }
+  
+  toHex () {
+    return '#' + numberToHex(this.r) + numberToHex(this.g) + numberToHex(this.b)
+  }
+}
+
+function changePos (x, y, pos) {
+  var diff = y - x
+  var result = Math.ceil(x + diff * pos)
+  return result
 }
 
 function hexToRGB (hex) {
@@ -42,7 +52,7 @@ function mixColors (color1, color2, pos) {
   var r3 = changePos(color1.r, color2.r, pos)
   var g3 = changePos(color1.g, color2.g, pos)
   var b3 = changePos(color1.b, color2.b, pos)
-  return rgbToHex(r3, g3, b3)
+  return new RGB(r3, g3, b3)
 }
 
 function getValue (sel) {
@@ -50,21 +60,18 @@ function getValue (sel) {
 }
 
 function setRes (num, color) {
-  document.querySelector(`#color${num}t`).value = color
+  let hexColor = color.toHex()
+  let complementColor = color.getComplement().toHex()
+  document.querySelector(`#color${num}t`).value = hexColor
   var res = document.querySelector(`#color${num}`)
-  res.innerText = color
-  res.style.color = color
-  res.style.backgroundColor = color
+  res.style.backgroundColor = hexColor
+  res.style.borderColor = complementColor
 }
 
 function getPropFromPos (pos) {
   var prop = pos - 128
   if (prop >= 0)prop++
   return prop
-}
-
-function isHexColor (str) {
-  return /^#[0123456789abcdef]{6}$/i.test(str)
 }
 
 function colorEdit () {
@@ -91,7 +98,7 @@ function setRGBSwatches (color, number) {
 }
 
 function editMix () {
-  var pos = document.querySelector('#pos').value
+  var pos = document.querySelector('#pos').value /256
   document.querySelector('#post').innerText = getPropFromPos(pos)
   var color1 = document.querySelector('#color1t').value
   var color2 = document.querySelector('#color2t').value
@@ -100,9 +107,9 @@ function editMix () {
   var color3 = (pos === 255) ? color2 : mixColors(rgb1, rgb2, pos)
   setRGBSwatches(rgb1, 1)
   setRGBSwatches(rgb2, 2)
-  setRes(1, color1)
-  setRes(2, color2)
-  setRes(3, color3)
+  setRes(1, rgb1)
+  setRes(2, rgb2)
+  setRes(3, rgb3)
 }
 
 function setSliderText(color, number){
@@ -120,12 +127,10 @@ function mix () {
   var rgb2 = new getColorFromSliders(2)
   setSliderText(rgb1,1)
   setSliderText(rgb2,2)
-  var pos = document.querySelector('#pos').value
-  document.querySelector('#post').innerText = getPropFromPos(pos)  
-  var color1 = rgb1.toHex()
-  var color2 = rgb2.toHex()
-  var color3 = (pos === 255) ? color2 : mixColors(rgb1, rgb2, pos)
-  setRes(1, color1)
-  setRes(2, color2)
-  setRes(3, color3)
+  var pos = document.querySelector('#pos').value /256
+  document.querySelector('#post').innerText = getPropFromPos(document.querySelector('#pos').value)  
+  var rgb3 = (pos === 255) ? color2 : mixColors(rgb1, rgb2, pos)
+  setRes(1, rgb1)
+  setRes(2, rgb2)
+  setRes(3, rgb3)
 }
